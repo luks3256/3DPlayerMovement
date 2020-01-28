@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseLook : MonoBehaviour
+public class PlayerCameraController : MonoBehaviour
 {
     public float mouseSensitivity = 100f;
 
@@ -26,5 +26,18 @@ public class MouseLook : MonoBehaviour
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
         playerBody.Rotate(Vector3.up * mouseX);
+        CheckForShooting();
+    }
+    private void CheckForShooting() {
+        if (Input.GetMouseButtonDown(0)) {
+            RaycastHit whatIHit;
+            if (Physics.Raycast(transform.position, transform.forward, out whatIHit, Mathf.Infinity)) {
+                IDamageble damageble = whatIHit.collider.GetComponent<IDamageble>();
+                if (damageble != null) {
+                    damageble.DealDamage(10);
+                    Debug.Log(whatIHit.collider.name);
+                }
+            }
+        }
     }
 }
