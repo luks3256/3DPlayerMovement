@@ -11,7 +11,8 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 12f;
     public float gravity = -9.81f;
     public float groundDistance = 0.4f;
-    public float jumpHeight = 3f;
+    public float jumpHeight = 2f;
+    public float fallMultiplier = 2.5f;
 
     Vector3 velocity;
     bool isGrounded;
@@ -43,5 +44,9 @@ public class PlayerMovement : MonoBehaviour
         }
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+        //Fall faster
+        if (velocity.y < 0) {
+            velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1)*Time.deltaTime;
+        }
     }
 }
